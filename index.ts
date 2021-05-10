@@ -1,6 +1,9 @@
-import { of } from "rxjs";
-import { map } from "rxjs/operators";
+import { of } from 'rxjs';
+import { Observable } from 'rxjs/dist/types';
+import { map } from 'rxjs/operators';
 
-const source = of("World").pipe(map(x => `Hello ${x}!`));
+const ob = new Observable(observer => {
+  observer.next('Hello');
+});
 
-source.subscribe(console.log);
+ob.subscribe(console.log);
