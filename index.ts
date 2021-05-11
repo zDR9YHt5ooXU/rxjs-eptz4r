@@ -1,9 +1,16 @@
-import { of } from 'rxjs';
-import { Observable } from 'rxjs/dist/types';
-import { map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { filter, switchMap } from 'rxjs/operators';
+import { http } from './http';
 
-const ob = new Observable(observer => {
-  observer.next('Hello');
-});
+console.clear();
+const vdomChanged$ = new Subject();
 
-ob.subscribe(console.log);
+vdomChanged$
+  .pipe(
+    filter(vdom => vdom !== 'root'),
+    switchMap(vdom => http.get(vdom))
+  )
+  .subscribe(console.log);
+
+vdomChanged$.next('root');
+vdomChanged$.next('vdom1');
