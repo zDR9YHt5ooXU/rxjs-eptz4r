@@ -1,16 +1,17 @@
-import { Subject } from 'rxjs';
-import { filter, tap, switchMap } from 'rxjs/operators';
-import { http } from './http';
+import { from, Subject, of } from 'rxjs';
+import { concatMap, delay } from 'rxjs/operators';
 
 console.clear();
-const vdomChanged$ = new Subject();
+const vdomChanged$ = new Subject<string>();
 
-vdomChanged$
-  .pipe(
-    filter(vdom => vdom !== 'vdom1'),
-    tap(vdom => http.get(vdom))
-  )
-  .subscribe(console.log);
+vdomChanged$.subscribe(console.log);
 
 vdomChanged$.next('root');
-vdomChanged$.next('vdom1');
+
+setTimeout(() => {
+  vdomChanged$.next('vdom1');
+}, 100);
+
+// from(['root', 'vdom1', 'vdom2'])
+//   .pipe(concatMap(val => of(val).pipe(delay(100))))
+//   .subscribe(vdomChanged$);
