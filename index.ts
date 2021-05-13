@@ -58,6 +58,9 @@ from(['root', 'vdom1', 'vdom2'])
 //   reload.next();
 // }, 1000);
 
-// timer(1000, 2)
-//   .pipe(take(2))
-//   .subscribe(reload);
+timer(1000, 2)
+  .pipe(
+    take(2),
+    tap(() => console.log('reload started'))
+  )
+  .subscribe(reload);
